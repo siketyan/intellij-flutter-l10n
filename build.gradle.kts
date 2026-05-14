@@ -1,4 +1,6 @@
 import org.jetbrains.intellij.platform.gradle.TestFrameworkType
+import org.jetbrains.intellij.platform.gradle.IntelliJPlatformType
+import org.jetbrains.intellij.platform.gradle.models.ProductRelease
 
 plugins {
     id("org.jetbrains.kotlin.jvm")
@@ -21,6 +23,7 @@ dependencies {
         compatiblePlugin("Dart")
         testPlugin("Dart", "505.0.0")
         testFramework(TestFrameworkType.Platform)
+        pluginVerifier()
     }
 }
 
@@ -28,6 +31,17 @@ intellijPlatform {
     pluginConfiguration {
         ideaVersion {
             sinceBuild = "261"
+        }
+    }
+
+    pluginVerification {
+        ides {
+            select {
+                types = listOf(IntelliJPlatformType.IntellijIdea)
+                channels = listOf(ProductRelease.Channel.RELEASE)
+                sinceBuild = "261"
+                untilBuild = "261.*"
+            }
         }
     }
 }

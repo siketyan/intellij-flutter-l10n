@@ -2,6 +2,7 @@ package jp.s6n.idea.flutter.l10n
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.util.io.FileUtil
 import com.intellij.openapi.vfs.VfsUtilCore
@@ -57,7 +58,7 @@ class L10nConfigService(private val project: Project) {
             }
             current = current.parent
         }
-        return project.baseDir
+        return project.guessProjectDir()
     }
 
     private fun distanceFrom(contextFile: VirtualFile?, root: VirtualFile?): Int {
