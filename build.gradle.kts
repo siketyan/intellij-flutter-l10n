@@ -8,18 +8,26 @@ plugins {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
     implementation("com.charleskorn.kaml:kaml:0.104.0")
 
     testImplementation("junit:junit:4.13.2")
 
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
-        intellijIdea("2025.2.6.2")
+        intellijIdea("2026.1.1")
         compatiblePlugin("com.redhat.devtools.lsp4ij")
         compatiblePlugin("Dart")
         testPlugin("Dart", "505.0.0")
         testFramework(TestFrameworkType.Platform)
+    }
+}
+
+intellijPlatform {
+    pluginConfiguration {
+        ideaVersion {
+            sinceBuild = "261"
+        }
     }
 }
 
