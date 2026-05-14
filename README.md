@@ -18,6 +18,18 @@
 
 This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
 
+## Development
+
+Run the plugin in a sandbox IDE:
+
+```shell
+./gradlew runIde
+```
+
+To manually test localization folding, open the sample Flutter project at
+[`sandbox/flutter_l10n_sample`](./sandbox/flutter_l10n_sample) in the sandbox IDE and inspect
+`lib/main.dart`.
+
 ## Installation
 
 - Using the IDE built-in plugin system:

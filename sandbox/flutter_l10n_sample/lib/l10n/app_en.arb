@@ -1,0 +1,19 @@
+{
+  "@@locale": "en",
+  "helloWorld": "Hello, world",
+  "@helloWorld": {
+    "description": "Title shown in the sample app bar"
+  },
+  "welcomeMessage": "Welcome to the localization sandbox",
+  "@welcomeMessage": {
+    "description": "Main sample message"
+  },
+  "cartItemCount": "You have 3 items in your cart",
+  "@cartItemCount": {
+    "description": "Sample plural-like message kept simple for folding"
+  },
+  "settingsTitle": "Settings",
+  "@settingsTitle": {
+    "description": "Settings screen title"
+  }
+}

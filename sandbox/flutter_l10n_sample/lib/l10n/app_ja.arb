@@ -1,0 +1,7 @@
+{
+  "@@locale": "ja",
+  "helloWorld": "こんにちは、世界",
+  "welcomeMessage": "ローカライズ sandbox へようこそ",
+  "cartItemCount": "カートに 3 件の商品があります",
+  "settingsTitle": "設定"
+}

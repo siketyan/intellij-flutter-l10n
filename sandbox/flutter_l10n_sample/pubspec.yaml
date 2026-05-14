@@ -1,0 +1,17 @@
+name: flutter_l10n_sandbox
+description: Sandbox project for manually testing Flutter localization folding.
+publish_to: none
+
+environment:
+  sdk: ^3.9.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  intl: any
+
+flutter:
+  generate: true
+  uses-material-design: true
