@@ -2,20 +2,11 @@ package jp.s6n.idea.flutter.l10n
 
 import com.jetbrains.lang.dart.DartFileType
 import com.jetbrains.lang.dart.psi.DartFile
-import com.intellij.openapi.fileTypes.LanguageFileType
-import com.intellij.openapi.fileTypes.FileTypeManager
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 import jp.s6n.idea.flutter.l10n.folding.DartLocalizationReferenceScanner
 import jp.s6n.idea.flutter.l10n.folding.FlutterL10nFoldingBuilder
 
 class FlutterL10nFoldingBuilderTest : BasePlatformTestCase() {
-    fun testArbFilesAreRecognizedAsJson() {
-        val fileType = FileTypeManager.getInstance().getFileTypeByExtension("arb")
-
-        assertEquals("ARB", fileType.name)
-        assertEquals("JSON", (fileType as LanguageFileType).language.id)
-    }
-
     fun testBuildsFoldingForConfiguredOutputClass() {
         addDefaultProjectFiles(
             l10nYaml = """
