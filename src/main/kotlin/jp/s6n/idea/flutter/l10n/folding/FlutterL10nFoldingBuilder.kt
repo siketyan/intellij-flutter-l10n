@@ -1,6 +1,5 @@
-package com.github.siketyan.flutterl10n.folding
+package jp.s6n.idea.flutter.l10n.folding
 
-import com.github.siketyan.flutterl10n.l10n.ArbTranslationService
 import com.jetbrains.lang.dart.psi.DartFile
 import com.intellij.lang.ASTNode
 import com.intellij.lang.folding.FoldingBuilderEx
@@ -8,6 +7,7 @@ import com.intellij.lang.folding.FoldingDescriptor
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Document
 import com.intellij.psi.PsiElement
+import jp.s6n.idea.flutter.l10n.ArbTranslationService
 
 class FlutterL10nFoldingBuilder : FoldingBuilderEx() {
     override fun buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array<FoldingDescriptor> {

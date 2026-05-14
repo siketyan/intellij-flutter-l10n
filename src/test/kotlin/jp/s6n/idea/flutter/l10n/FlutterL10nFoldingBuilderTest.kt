@@ -1,10 +1,10 @@
-package com.github.siketyan.flutterl10n
+package jp.s6n.idea.flutter.l10n
 
-import com.github.siketyan.flutterl10n.folding.DartLocalizationReferenceScanner
-import com.github.siketyan.flutterl10n.folding.FlutterL10nFoldingBuilder
 import com.jetbrains.lang.dart.DartFileType
 import com.jetbrains.lang.dart.psi.DartFile
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
+import jp.s6n.idea.flutter.l10n.folding.DartLocalizationReferenceScanner
+import jp.s6n.idea.flutter.l10n.folding.FlutterL10nFoldingBuilder
 
 class FlutterL10nFoldingBuilderTest : BasePlatformTestCase() {
     fun testBuildsFoldingForConfiguredOutputClass() {

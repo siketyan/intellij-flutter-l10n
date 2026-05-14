@@ -1,4 +1,4 @@
-package com.github.siketyan.flutterl10n.folding
+package jp.s6n.idea.flutter.l10n.folding
 
 import com.jetbrains.lang.dart.psi.DartExpression
 import com.jetbrains.lang.dart.psi.DartFile

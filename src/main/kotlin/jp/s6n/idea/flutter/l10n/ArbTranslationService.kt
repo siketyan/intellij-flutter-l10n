@@ -1,4 +1,4 @@
-package com.github.siketyan.flutterl10n.l10n
+package jp.s6n.idea.flutter.l10n
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service

@@ -15,6 +15,6 @@
     <extensions defaultExtensionNs="com.intellij">
         <lang.foldingBuilder
                 language="Dart"
-                implementationClass="com.github.siketyan.flutterl10n.folding.FlutterL10nFoldingBuilder"/>
+                implementationClass="jp.s6n.idea.flutter.l10n.folding.FlutterL10nFoldingBuilder"/>
     </extensions>
 </idea-plugin>

@@ -1,4 +1,4 @@
-package com.github
+package jp.s6n.idea.flutter.l10n
 
 import com.intellij.DynamicBundle
 import org.jetbrains.annotations.NonNls
