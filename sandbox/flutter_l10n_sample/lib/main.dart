@@ -23,6 +23,8 @@ class SandboxHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.helloWorld),
@@ -32,6 +34,7 @@ class SandboxHome extends StatelessWidget {
         children: [
           Text(AppLocalizations.of(context)!.welcomeMessage),
           Text(AppLocalizations.of(context)!.cartItemCount),
+          Text(l10n.helloWorld),
           Text(AppLocalizations.of(context)?.settingsTitle ?? ''),
         ],
       ),

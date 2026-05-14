@@ -117,6 +117,38 @@ class FlutterL10nFoldingBuilderTest : BasePlatformTestCase() {
         assertEquals("\"Hello\"", descriptors.single().placeholderText)
     }
 
+    fun testBuildsFoldingForLocalizationVariableAccess() {
+        addDefaultProjectFiles(
+            l10nYaml = "output-class: L10nClass",
+            arb = """
+                {
+                  "fooBar": "Hello",
+                  "bazQux": "Goodbye"
+                }
+            """.trimIndent(),
+        )
+
+        val file = configureDartFile(
+            """
+                void build(context) {
+                  final l10n = L10nClass.of(context);
+                  final first = l10n.fooBar;
+                  final second = l10n.bazQux;
+                  final assertedL10n = L10nClass.of(context)!;
+                  final third = assertedL10n.fooBar;
+                }
+            """.trimIndent(),
+        )
+
+        val descriptors = FlutterL10nFoldingBuilder().buildFoldRegions(file, myFixture.editor.document, false)
+
+        assertEquals(listOf("\"Hello\"", "\"Goodbye\"", "\"Hello\""), descriptors.map { it.placeholderText })
+        assertEquals(
+            listOf("l10n.fooBar", "l10n.bazQux", "assertedL10n.fooBar"),
+            descriptors.map { it.range.substring(file.text) },
+        )
+    }
+
     fun testScannerFindsWholeReferenceRange() {
         val file = configureDartFile("final text = L10nClass.of(context).fooBar;")
 
@@ -126,6 +158,23 @@ class FlutterL10nFoldingBuilderTest : BasePlatformTestCase() {
         assertEquals("L10nClass", reference.localizationClassName)
         assertEquals("fooBar", reference.key)
         assertEquals("L10nClass.of(context).fooBar", reference.range.substring(file.text))
+    }
+
+    fun testScannerFindsLocalizationVariableReferences() {
+        val file = configureDartFile(
+            """
+                void build(context) {
+                  final l10n = L10nClass.of(context);
+                  final text = l10n.fooBar;
+                }
+            """.trimIndent(),
+        )
+
+        val reference = DartLocalizationReferenceScanner.scan(file as DartFile).single()
+
+        assertEquals("L10nClass", reference.localizationClassName)
+        assertEquals("fooBar", reference.key)
+        assertEquals("l10n.fooBar", reference.range.substring(file.text))
     }
 
     fun testScannerSkipsCommentsAndStrings() {
