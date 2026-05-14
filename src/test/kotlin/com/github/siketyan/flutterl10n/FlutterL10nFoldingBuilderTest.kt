@@ -2,6 +2,8 @@ package com.github.siketyan.flutterl10n
 
 import com.github.siketyan.flutterl10n.folding.DartLocalizationReferenceScanner
 import com.github.siketyan.flutterl10n.folding.FlutterL10nFoldingBuilder
+import com.jetbrains.lang.dart.DartFileType
+import com.jetbrains.lang.dart.psi.DartFile
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
 
 class FlutterL10nFoldingBuilderTest : BasePlatformTestCase() {
@@ -116,23 +118,26 @@ class FlutterL10nFoldingBuilderTest : BasePlatformTestCase() {
     }
 
     fun testScannerFindsWholeReferenceRange() {
-        val text = "final text = L10nClass.of(context).fooBar;"
+        val file = configureDartFile("final text = L10nClass.of(context).fooBar;")
 
-        val reference = DartLocalizationReferenceScanner.scan(text).single()
+        assertInstanceOf(file, DartFile::class.java)
+        val reference = DartLocalizationReferenceScanner.scan(file as DartFile).single()
 
         assertEquals("L10nClass", reference.localizationClassName)
         assertEquals("fooBar", reference.key)
-        assertEquals("L10nClass.of(context).fooBar", reference.range.substring(text))
+        assertEquals("L10nClass.of(context).fooBar", reference.range.substring(file.text))
     }
 
     fun testScannerSkipsCommentsAndStrings() {
-        val text = """
+        val file = configureDartFile(
+            """
             // L10nClass.of(context).commented
             final literal = "L10nClass.of(context).literal";
             final text = L10nClass.of(context).fooBar;
-        """.trimIndent()
+            """.trimIndent(),
+        )
 
-        val reference = DartLocalizationReferenceScanner.scan(text).single()
+        val reference = DartLocalizationReferenceScanner.scan(file as DartFile).single()
 
         assertEquals("fooBar", reference.key)
     }
@@ -144,8 +149,6 @@ class FlutterL10nFoldingBuilderTest : BasePlatformTestCase() {
     }
 
     private fun configureDartFile(text: String): com.intellij.psi.PsiFile {
-        val virtualFile = myFixture.addFileToProject("lib/main.dart", text.trimIndent()).virtualFile
-        myFixture.configureFromExistingVirtualFile(virtualFile)
-        return myFixture.file
+        return myFixture.configureByText(DartFileType.INSTANCE, text.trimIndent())
     }
 }

@@ -1,20 +1,21 @@
 package com.github.siketyan.flutterl10n.folding
 
 import com.github.siketyan.flutterl10n.l10n.ArbTranslationService
+import com.jetbrains.lang.dart.psi.DartFile
 import com.intellij.lang.ASTNode
 import com.intellij.lang.folding.FoldingBuilderEx
 import com.intellij.lang.folding.FoldingDescriptor
 import com.intellij.openapi.components.service
 import com.intellij.openapi.editor.Document
-import com.intellij.openapi.util.TextRange
 import com.intellij.psi.PsiElement
 
 class FlutterL10nFoldingBuilder : FoldingBuilderEx() {
     override fun buildFoldRegions(root: PsiElement, document: Document, quick: Boolean): Array<FoldingDescriptor> {
-        val virtualFile = root.containingFile?.virtualFile
+        val dartFile = root.containingFile as? DartFile ?: return FoldingDescriptor.EMPTY_ARRAY
+        val virtualFile = dartFile.virtualFile
         val translationService = root.project.service<ArbTranslationService>()
 
-        return DartLocalizationReferenceScanner.scan(document.text)
+        return DartLocalizationReferenceScanner.scan(dartFile)
             .mapNotNull { reference ->
                 val translation = translationService.lookup(
                     contextFile = virtualFile,
