@@ -5,6 +5,6 @@ import com.intellij.psi.PsiElement
 
 class DartLocalizationDirectNavigationProvider : DirectNavigationProvider {
     override fun getNavigationElement(element: PsiElement): PsiElement? {
-        return DartLocalizationNavigationResolver.resolve(element, element.textOffset)
+        return DartLocalizationNavigationResolver.resolveTargets(element, element.textOffset).singleOrNull()
     }
 }

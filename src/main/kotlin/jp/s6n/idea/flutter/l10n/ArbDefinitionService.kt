@@ -14,15 +14,17 @@ import com.intellij.psi.PsiManager
 @Service(Service.Level.PROJECT)
 class ArbDefinitionService(private val project: Project) {
     fun findDefinition(contextFile: VirtualFile?, localizationClassName: String?, key: String): PsiElement? {
+        return findDefinitions(contextFile, localizationClassName, key).firstOrNull()
+    }
+
+    fun findDefinitions(contextFile: VirtualFile?, localizationClassName: String?, key: String): List<PsiElement> {
         val config = project.service<L10nConfigService>().resolveFor(contextFile, localizationClassName)
         val files = findArbFiles(config)
         val orderedFiles = files.sortedWith(compareBy<VirtualFile> { it.name != config.templateArbFile }.thenBy { it.path })
 
         return orderedFiles
-            .asSequence()
             .mapNotNull { file -> findProperty(file, key) }
-            .firstOrNull()
-            ?.nameElement
+            .map { property -> property.nameElement }
     }
 
     private fun findProperty(file: VirtualFile, key: String): JsonProperty? {

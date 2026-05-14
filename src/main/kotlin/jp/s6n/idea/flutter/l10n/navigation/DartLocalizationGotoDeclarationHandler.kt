@@ -6,7 +6,7 @@ import com.intellij.psi.PsiElement
 
 class DartLocalizationGotoDeclarationHandler : GotoDeclarationHandler {
     override fun getGotoDeclarationTargets(sourceElement: PsiElement?, offset: Int, editor: Editor): Array<PsiElement>? {
-        val target = DartLocalizationNavigationResolver.resolve(sourceElement, offset) ?: return null
-        return arrayOf(target)
+        val targets = DartLocalizationNavigationResolver.resolveTargets(sourceElement, offset)
+        return targets.ifEmpty { null }?.toTypedArray()
     }
 }
