@@ -8,7 +8,7 @@ plugins {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
     implementation("com.charleskorn.kaml:kaml:0.104.0")
 
     testImplementation("junit:junit:4.13.2")
@@ -21,4 +21,9 @@ dependencies {
         testPlugin("Dart", "505.0.0")
         testFramework(TestFrameworkType.Platform)
     }
+}
+
+configurations.runtimeClasspath {
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
+    exclude(group = "org.jetbrains", module = "annotations")
 }
