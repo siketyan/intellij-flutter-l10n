@@ -48,7 +48,8 @@ class FlutterL10nFoldingBuilderTest : BasePlatformTestCase() {
             arb = """
                 {
                   "fooBar": "Hello",
-                  "bazQux": "Goodbye"
+                  "bazQux": "Goodbye",
+                  "settingsTitle": "Settings"
                 }
             """.trimIndent(),
         )
@@ -58,13 +59,22 @@ class FlutterL10nFoldingBuilderTest : BasePlatformTestCase() {
                 void build(context) {
                   final first = AppLocalizations.of(context)!.fooBar;
                   final second = AppLocalizations.of(context)?.bazQux;
+                  final third = AppLocalizations.of(context)?.settingsTitle ?? '';
                 }
             """.trimIndent(),
         )
 
         val descriptors = FlutterL10nFoldingBuilder().buildFoldRegions(file, myFixture.editor.document, false)
 
-        assertEquals(listOf("\"Hello\"", "\"Goodbye\""), descriptors.map { it.placeholderText })
+        assertEquals(listOf("\"Hello\"", "\"Goodbye\"", "\"Settings\""), descriptors.map { it.placeholderText })
+        assertEquals(
+            listOf(
+                "AppLocalizations.of(context)!.fooBar",
+                "AppLocalizations.of(context)?.bazQux",
+                "AppLocalizations.of(context)?.settingsTitle",
+            ),
+            descriptors.map { it.range.substring(file.text) },
+        )
     }
 
     fun testDoesNotBuildFoldingForMissingTranslation() {
