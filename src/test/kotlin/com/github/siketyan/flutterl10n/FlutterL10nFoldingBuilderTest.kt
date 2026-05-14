@@ -90,6 +90,31 @@ class FlutterL10nFoldingBuilderTest : BasePlatformTestCase() {
         assertEmpty(descriptors.toList())
     }
 
+    fun testUsesDefaultConfigWhenL10nYamlDoesNotExist() {
+        myFixture.addFileToProject("pubspec.yaml", "name: test_app\n")
+        myFixture.addFileToProject(
+            "lib/l10n/app_en.arb",
+            """
+                {
+                  "fooBar": "Hello"
+                }
+            """.trimIndent(),
+        )
+
+        val file = configureDartFile(
+            """
+                void build(context) {
+                  final text = AppLocalizations.of(context).fooBar;
+                }
+            """.trimIndent(),
+        )
+
+        val descriptors = FlutterL10nFoldingBuilder().buildFoldRegions(file, myFixture.editor.document, false)
+
+        assertEquals(1, descriptors.size)
+        assertEquals("\"Hello\"", descriptors.single().placeholderText)
+    }
+
     fun testScannerFindsWholeReferenceRange() {
         val text = "final text = L10nClass.of(context).fooBar;"
 
@@ -98,6 +123,18 @@ class FlutterL10nFoldingBuilderTest : BasePlatformTestCase() {
         assertEquals("L10nClass", reference.localizationClassName)
         assertEquals("fooBar", reference.key)
         assertEquals("L10nClass.of(context).fooBar", reference.range.substring(text))
+    }
+
+    fun testScannerSkipsCommentsAndStrings() {
+        val text = """
+            // L10nClass.of(context).commented
+            final literal = "L10nClass.of(context).literal";
+            final text = L10nClass.of(context).fooBar;
+        """.trimIndent()
+
+        val reference = DartLocalizationReferenceScanner.scan(text).single()
+
+        assertEquals("fooBar", reference.key)
     }
 
     private fun addDefaultProjectFiles(l10nYaml: String, arb: String) {
