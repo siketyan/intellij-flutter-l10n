@@ -1,12 +1,16 @@
 package com.github.siketyan.flutterl10n.l10n
 
-import com.google.gson.JsonParser
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.vfs.VfsUtilCore
 import com.intellij.openapi.vfs.VirtualFile
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonObject
 
 @Service(Service.Level.PROJECT)
 class ArbTranslationService(private val project: Project) {
@@ -35,19 +39,19 @@ class ArbTranslationService(private val project: Project) {
     }
 
     private fun parseArbFile(file: VirtualFile): ParsedArbFile? {
-        val json = runCatching { JsonParser.parseString(VfsUtilCore.loadText(file)).asJsonObject }.getOrNull()
+        val json = runCatching { json.parseToJsonElement(VfsUtilCore.loadText(file)).jsonObject }.getOrNull()
             ?: return null
 
         val translations = mutableMapOf<String, String>()
         var declaredLocale: String? = null
 
-        for ((key, value) in json.entrySet()) {
-            if (key == "@@locale" && value.isJsonPrimitive && value.asJsonPrimitive.isString) {
-                declaredLocale = value.asString
+        for ((key, value) in json) {
+            if (key == "@@locale") {
+                declaredLocale = value.stringContentOrNull()
                 continue
             }
-            if (!key.startsWith("@") && value.isJsonPrimitive && value.asJsonPrimitive.isString) {
-                translations[key] = value.asString
+            if (!key.startsWith("@")) {
+                translations[key] = value.stringContentOrNull() ?: continue
             }
         }
 
@@ -105,6 +109,11 @@ class ArbTranslationService(private val project: Project) {
         }
     }
 
+    private fun JsonElement?.stringContentOrNull(): String? {
+        val primitive = this as? JsonPrimitive ?: return null
+        return primitive.takeIf { it.isString }?.contentOrNull
+    }
+
     private data class ParsedArbFile(
         val file: VirtualFile,
         val locale: String?,
@@ -123,6 +132,10 @@ class ArbTranslationService(private val project: Project) {
     )
 
     companion object {
+        private val json = Json {
+            ignoreUnknownKeys = true
+        }
+
         private const val ARB_EXTENSION = "arb"
     }
 }
