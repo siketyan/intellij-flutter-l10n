@@ -23,5 +23,11 @@
         <lang.foldingBuilder
                 language="Dart"
                 implementationClass="jp.s6n.idea.flutter.l10n.folding.FlutterL10nFoldingBuilder"/>
+        <lang.directNavigationProvider implementationClass="jp.s6n.idea.flutter.l10n.navigation.DartLocalizationDirectNavigationProvider"/>
+        <targetElementEvaluator
+                language="Dart"
+                implementationClass="jp.s6n.idea.flutter.l10n.navigation.DartLocalizationTargetElementEvaluator"/>
+        <definitionsScopedSearch implementation="jp.s6n.idea.flutter.l10n.navigation.DartLocalizationDefinitionsSearch"/>
+        <gotoDeclarationHandler implementation="jp.s6n.idea.flutter.l10n.navigation.DartLocalizationGotoDeclarationHandler"/>
     </extensions>
 </idea-plugin>

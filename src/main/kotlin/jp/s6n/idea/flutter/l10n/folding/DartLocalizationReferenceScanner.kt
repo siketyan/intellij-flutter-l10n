@@ -79,6 +79,7 @@ object DartLocalizationReferenceScanner {
 
         return DartLocalizationReference(
             range = expression.textRange,
+            keyRange = parts.last().textRange,
             localizationClassName = className,
             key = key,
         )
@@ -117,6 +118,7 @@ object DartLocalizationReferenceScanner {
 
 data class DartLocalizationReference(
     val range: TextRange,
+    val keyRange: TextRange,
     val localizationClassName: String,
     val key: String,
 )
