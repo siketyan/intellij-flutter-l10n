@@ -1,22 +1,48 @@
 # Flutter Localizations Support for IntelliJ IDEA
 
-![Build](https://github.com/%REPOSITORY%/workflows/Build/badge.svg)
-[![Version](https://img.shields.io/jetbrains/plugin/v/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
-[![Downloads](https://img.shields.io/jetbrains/plugin/d/MARKETPLACE_ID.svg)](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID)
+IntelliJ IDEA plugin for working with Flutter `gen-l10n` localizations.
 
-## Template ToDo list
-- [x] Create a new [IntelliJ Platform Plugin Template][template] project.
-- [ ] Get familiar with the [template documentation][template].
-- [ ] Adjust the [group](./gradle.properties), as well as the [id](./src/main/resources/META-INF/plugin.xml), [name](./src/main/resources/META-INF/plugin.xml), and [sources package](./src/main/kotlin).
-- [ ] Adjust the plugin [description](./src/main/resources/META-INF/plugin.xml) (see [Tips][docs:plugin-description]) and this README to describe what your plugin does.
-- [ ] Review the [Legal Agreements](https://plugins.jetbrains.com/docs/marketplace/legal-agreements.html?from=IJPluginTemplate).
-- [ ] [Publish a plugin manually](https://plugins.jetbrains.com/docs/intellij/publishing-plugin.html?from=IJPluginTemplate) for the first time.
-- [ ] Set the `MARKETPLACE_ID` in the above README badges. You can obtain it once the plugin is published to JetBrains Marketplace.
-- [ ] Set the [Plugin Signing](https://plugins.jetbrains.com/docs/intellij/plugin-signing.html?from=IJPluginTemplate) related [secrets](https://github.com/JetBrains/intellij-platform-plugin-template#environment-variables).
-- [ ] Set the [Deployment Token](https://plugins.jetbrains.com/docs/marketplace/plugin-upload.html?from=IJPluginTemplate).
-- [ ] Click the <kbd>Watch</kbd> button on the top of the [IntelliJ Platform Plugin Template][template] to be notified about releases containing new features and fixes.
+The plugin reads Flutter ARB files and `l10n.yaml`, then uses that information in Dart editors to make localization references easier to inspect and navigate.
 
-This Fancy IntelliJ Platform Plugin is going to be your implementation of the brilliant ideas that you have.
+## Features
+
+- Shows localized ARB messages as folding placeholders for Dart localization references.
+- Supports direct references such as `AppLocalizations.of(context)!.settingsTitle`.
+- Supports null-aware access such as `AppLocalizations.of(context)?.settingsTitle ?? ''`.
+- Supports variables that store the localization instance, such as:
+
+  ```dart
+  final l10n = AppLocalizations.of(context);
+  Text(l10n.settingsTitle);
+  ```
+
+- Recognizes `.arb` files as JSON so existing JSON editor support works for ARB files.
+- Navigates from Dart localization keys to matching ARB entries across locales.
+- Navigates from ARB keys back to Dart usages.
+- Displays ARB navigation candidates using the translated text and the source file name, for example `app_en.arb`.
+
+## Requirements
+
+- IntelliJ IDEA 2026.1 or later.
+- Dart plugin.
+- JSON platform module.
+
+The plugin ID is `jp.s6n.idea.flutter.l10n`.
+
+## Supported Flutter Configuration
+
+The plugin looks for `l10n.yaml` and uses these Flutter `gen-l10n` settings when present:
+
+- `arb-dir`
+- `template-arb-file`
+- `output-class`
+- `preferred-supported-locales`
+
+If `l10n.yaml` is missing, it falls back to Flutter defaults:
+
+- ARB directory: `lib/l10n`
+- Template ARB file: `app_en.arb`
+- Output class: `AppLocalizations`
 
 ## Development
 
@@ -26,32 +52,45 @@ Run the plugin in a sandbox IDE:
 ./gradlew runIde
 ```
 
-To manually test localization folding, open the sample Flutter project at
-[`sandbox/flutter_l10n_sample`](./sandbox/flutter_l10n_sample) in the sandbox IDE and inspect
-`lib/main.dart`.
+Run tests:
+
+```shell
+./gradlew test
+```
+
+Verify plugin compatibility:
+
+```shell
+./gradlew verifyPlugin
+```
+
+Build the plugin ZIP:
+
+```shell
+./gradlew buildPlugin
+```
+
+## Manual Testing
+
+A small Flutter localization sample is included at:
+
+```text
+sandbox/flutter_l10n_sample
+```
+
+To test manually:
+
+1. Run `./gradlew runIde`.
+2. Open `sandbox/flutter_l10n_sample` in the sandbox IDE.
+3. Inspect `lib/main.dart` for folding placeholders and navigation behavior.
+4. Use Go to Declaration or Go to Implementation on localization keys to jump between Dart references and ARB entries.
+
+The sample includes generated localization Dart files and does not require running `flutter gen-l10n` before opening it.
 
 ## Installation
 
-- Using the IDE built-in plugin system:
+For local development, build the ZIP with `./gradlew buildPlugin` and install it from disk:
 
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>Marketplace</kbd> > <kbd>Search for "intellij-flutter-l10n""</kbd> >
-  <kbd>Install</kbd>
+`Settings/Preferences` > `Plugins` > `Install Plugin from Disk...`
 
-- Using JetBrains Marketplace:
-
-  Go to [JetBrains Marketplace](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID) and install it by clicking the <kbd>Install to ...</kbd> button in case your IDE is running.
-
-  You can also download the [latest release](https://plugins.jetbrains.com/plugin/MARKETPLACE_ID/versions) from JetBrains Marketplace and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
-
-- Manually:
-
-  Download the [latest release](https://github.com/%REPOSITORY%/releases/latest) and install it manually using
-  <kbd>Settings/Preferences</kbd> > <kbd>Plugins</kbd> > <kbd>⚙️</kbd> > <kbd>Install plugin from disk...</kbd>
-
-
----
-Plugin based on the [IntelliJ Platform Plugin Template][template].
-
-[template]: https://github.com/JetBrains/intellij-platform-plugin-template
-[docs:plugin-description]: https://plugins.jetbrains.com/docs/intellij/plugin-user-experience.html#plugin-description-and-presentation
+JetBrains Marketplace installation details can be added after the plugin is published.
