@@ -11,8 +11,6 @@
     <depends>com.intellij.modules.json</depends>
     <depends>Dart</depends>
 
-    <resource-bundle>messages.MyBundle</resource-bundle>
-
     <extensions defaultExtensionNs="com.intellij">
         <fileType
                 name="ARB"
@@ -23,7 +21,7 @@
         <lang.foldingBuilder
                 language="Dart"
                 implementationClass="jp.s6n.idea.flutter.l10n.folding.FlutterL10nFoldingBuilder"/>
-        <lang.directNavigationProvider implementationClass="jp.s6n.idea.flutter.l10n.navigation.DartLocalizationDirectNavigationProvider"/>
+        <lang.directNavigationProvider implementation="jp.s6n.idea.flutter.l10n.navigation.DartLocalizationDirectNavigationProvider"/>
         <targetElementEvaluator
                 language="Dart"
                 implementationClass="jp.s6n.idea.flutter.l10n.navigation.DartLocalizationTargetElementEvaluator"/>
