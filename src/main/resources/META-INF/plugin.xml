@@ -8,11 +8,18 @@
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.modules.json</depends>
     <depends>Dart</depends>
 
     <resource-bundle>messages.MyBundle</resource-bundle>
 
     <extensions defaultExtensionNs="com.intellij">
+        <fileType
+                name="ARB"
+                extensions="arb"
+                implementationClass="jp.s6n.idea.flutter.l10n.ArbFileType"
+                fieldName="INSTANCE"
+                language="JSON"/>
         <lang.foldingBuilder
                 language="Dart"
                 implementationClass="jp.s6n.idea.flutter.l10n.folding.FlutterL10nFoldingBuilder"/>

@@ -16,6 +16,7 @@ dependencies {
     // IntelliJ Platform Gradle Plugin Dependencies Extension - read more: https://plugins.jetbrains.com/docs/intellij/tools-intellij-platform-gradle-plugin-dependencies-extension.html
     intellijPlatform {
         intellijIdea("2026.1.1")
+        bundledPlugin("com.intellij.modules.json")
         compatiblePlugin("com.redhat.devtools.lsp4ij")
         compatiblePlugin("Dart")
         testPlugin("Dart", "505.0.0")
