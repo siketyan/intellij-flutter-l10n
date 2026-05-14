@@ -1,6 +1,7 @@
 package jp.s6n.idea.flutter.l10n
 
 import com.intellij.codeInsight.navigation.GotoImplementationHandler
+import com.intellij.navigation.NavigationItem
 import com.intellij.psi.search.GlobalSearchScope
 import com.intellij.psi.search.searches.DefinitionsScopedSearch
 import com.intellij.testFramework.fixtures.BasePlatformTestCase
@@ -27,6 +28,8 @@ class DartLocalizationNavigationTest : BasePlatformTestCase() {
         assertNotNull(targets)
         assertEquals(listOf("app_en.arb", "app_ja.arb"), targets!!.map { it.containingFile.virtualFile.name })
         assertEquals(listOf("\"fooBar\"", "\"fooBar\""), targets.map { it.text })
+        assertEquals(listOf("Hello", "こんにちは"), targets.map { it.presentationText() })
+        assertEquals(listOf("app_en.arb", "app_ja.arb"), targets.map { it.presentationLocation() })
     }
 
     fun testGoToDeclarationTargetsArbPropertyForLocalizationVariable() {
@@ -48,6 +51,8 @@ class DartLocalizationNavigationTest : BasePlatformTestCase() {
         assertNotNull(targets)
         assertEquals(listOf("app_en.arb", "app_ja.arb"), targets!!.map { it.containingFile.virtualFile.name })
         assertEquals(listOf("\"fooBar\"", "\"fooBar\""), targets.map { it.text })
+        assertEquals(listOf("Hello", "こんにちは"), targets.map { it.presentationText() })
+        assertEquals(listOf("app_en.arb", "app_ja.arb"), targets.map { it.presentationLocation() })
     }
 
     fun testDirectNavigationTargetsArbProperty() {
@@ -66,6 +71,8 @@ class DartLocalizationNavigationTest : BasePlatformTestCase() {
         assertNotNull(target)
         assertEquals("\"fooBar\"", target!!.text)
         assertEquals("app_en.arb", target.containingFile.virtualFile.name)
+        assertEquals("Hello", target.presentationText())
+        assertEquals("app_en.arb", target.presentationLocation())
     }
 
     fun testGoToImplementationTargetsArbProperty() {
@@ -84,6 +91,8 @@ class DartLocalizationNavigationTest : BasePlatformTestCase() {
         assertNotNull(data)
         assertEquals("\"fooBar\"", data.targets.single().text)
         assertEquals("app_en.arb", data.targets.single().containingFile.virtualFile.name)
+        assertEquals("Hello", data.targets.single().presentationText())
+        assertEquals("app_en.arb", data.targets.single().presentationLocation())
     }
 
     fun testImplementationSearchTargetsAllArbProperties() {
@@ -106,6 +115,8 @@ class DartLocalizationNavigationTest : BasePlatformTestCase() {
 
         assertEquals(listOf("app_en.arb", "app_ja.arb"), targets.map { it.containingFile.virtualFile.name })
         assertEquals(listOf("\"fooBar\"", "\"fooBar\""), targets.map { it.text })
+        assertEquals(listOf("Hello", "こんにちは"), targets.map { it.presentationText() })
+        assertEquals(listOf("app_en.arb", "app_ja.arb"), targets.map { it.presentationLocation() })
     }
 
     fun testGoToDeclarationTargetsDartUsageFromArbProperty() {
@@ -184,4 +195,12 @@ class DartLocalizationNavigationTest : BasePlatformTestCase() {
     }
 
     private fun configureDartFile(text: String) = myFixture.configureByText(DartFileType.INSTANCE, text.trimIndent())
+
+    private fun Any.presentationText(): String? {
+        return (this as? NavigationItem)?.presentation?.presentableText
+    }
+
+    private fun Any.presentationLocation(): String? {
+        return (this as? NavigationItem)?.presentation?.locationString
+    }
 }
