@@ -1,6 +1,7 @@
 package jp.s6n.idea.flutter.l10n
 
 import com.intellij.openapi.components.Service
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.project.guessProjectDir
 import com.intellij.openapi.roots.ProjectFileIndex
@@ -13,6 +14,7 @@ class L10nConfigService(private val project: Project) {
     fun resolveFor(contextFile: VirtualFile?, localizationClassName: String?): L10nConfig {
         val configs = findConfigs()
         if (configs.isEmpty()) {
+            LOG.warn("flutter-l10n: no l10n.yaml configs found, falling back to default for ${contextFile?.path}")
             return defaultConfig(contextFile)
         }
 
@@ -33,8 +35,12 @@ class L10nConfigService(private val project: Project) {
             true
         }
 
+        LOG.warn("flutter-l10n: found ${files.size} l10n.yaml file(s): ${files.map { it.path }}")
+
         return files.mapNotNull { file ->
-            val parsed = runCatching { L10nYamlParser.parse(VfsUtilCore.loadText(file)) }.getOrNull() ?: return@mapNotNull null
+            val parsed = runCatching { L10nYamlParser.parse(VfsUtilCore.loadText(file)) }
+                .onFailure { e -> LOG.warn("flutter-l10n: failed to parse ${file.path}: $e") }
+                .getOrNull() ?: return@mapNotNull null
             L10nConfig(
                 root = file.parent,
                 yamlFile = file,
@@ -72,6 +78,7 @@ class L10nConfigService(private val project: Project) {
     }
 
     companion object {
+        private val LOG = Logger.getInstance(L10nConfigService::class.java)
         private const val L10N_YAML = "l10n.yaml"
         private const val PUBSPEC_YAML = "pubspec.yaml"
     }

@@ -5,6 +5,7 @@ import com.intellij.lang.ASTNode
 import com.intellij.lang.folding.FoldingBuilderEx
 import com.intellij.lang.folding.FoldingDescriptor
 import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.editor.Document
 import com.intellij.psi.PsiElement
 import jp.s6n.idea.flutter.l10n.ArbTranslationService
@@ -15,13 +16,21 @@ class FlutterL10nFoldingBuilder : FoldingBuilderEx() {
         val virtualFile = dartFile.virtualFile
         val translationService = root.project.service<ArbTranslationService>()
 
-        return DartLocalizationReferenceScanner.scan(dartFile)
+        val references = DartLocalizationReferenceScanner.scan(dartFile)
+        LOG.warn("flutter-l10n: scanning ${dartFile.name}: found ${references.size} l10n reference(s)")
+
+        return references
             .mapNotNull { reference ->
                 val translation = translationService.lookup(
                     contextFile = virtualFile,
                     localizationClassName = reference.localizationClassName,
                     key = reference.key,
-                ) ?: return@mapNotNull null
+                )
+                if (translation == null) {
+                    LOG.warn("flutter-l10n: no translation for ${reference.localizationClassName}.${reference.key} in ${dartFile.name}")
+                }
+
+                translation ?: return@mapNotNull null
 
                 FoldingDescriptor(
                     root.node,
@@ -53,6 +62,7 @@ class FlutterL10nFoldingBuilder : FoldingBuilderEx() {
     }
 
     companion object {
+        private val LOG = Logger.getInstance(FlutterL10nFoldingBuilder::class.java)
         private const val MAX_PLACEHOLDER_LENGTH = 80
         private const val ELLIPSIS = "..."
     }

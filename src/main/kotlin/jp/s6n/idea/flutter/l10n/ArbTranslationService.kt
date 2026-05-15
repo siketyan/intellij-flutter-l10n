@@ -2,6 +2,7 @@ package jp.s6n.idea.flutter.l10n
 
 import com.intellij.openapi.components.Service
 import com.intellij.openapi.components.service
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectFileIndex
 import com.intellij.openapi.vfs.VfsUtilCore
@@ -87,9 +88,11 @@ class ArbTranslationService(private val project: Project) {
             .orEmpty()
 
         if (configuredFiles.isNotEmpty()) {
+            LOG.warn("flutter-l10n: using configured arb files from ${arbDir?.path}: ${configuredFiles.map { it.name }}")
             return configuredFiles.sortedBy { it.path }
         }
 
+        LOG.warn("flutter-l10n: arb dir not found at ${root?.path}/${config.arbDir}, scanning project")
         val files = mutableListOf<VirtualFile>()
         ProjectFileIndex.getInstance(project).iterateContent { file ->
             if (!file.isDirectory && file.extension == ARB_EXTENSION) {
@@ -97,6 +100,7 @@ class ArbTranslationService(private val project: Project) {
             }
             true
         }
+        LOG.warn("flutter-l10n: found ${files.size} arb file(s) in project scan: ${files.map { it.path }}")
         return files.sortedBy { it.path }
     }
 
@@ -132,6 +136,7 @@ class ArbTranslationService(private val project: Project) {
     )
 
     companion object {
+        private val LOG = Logger.getInstance(ArbTranslationService::class.java)
         private val json = Json {
             ignoreUnknownKeys = true
         }
