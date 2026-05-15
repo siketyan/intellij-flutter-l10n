@@ -14,7 +14,7 @@ import kotlinx.serialization.json.jsonObject
 
 @Service(Service.Level.PROJECT)
 class ArbTranslationService(private val project: Project) {
-    private var cachedBundle: CachedBundle? = null
+    private val cachedBundles = mutableMapOf<String, CachedBundle>()
 
     fun lookup(contextFile: VirtualFile?, localizationClassName: String?, key: String): String? {
         val config = project.service<L10nConfigService>().resolveFor(contextFile, localizationClassName)
@@ -25,9 +25,9 @@ class ArbTranslationService(private val project: Project) {
             arbFiles = files.map { it.path to it.modificationStamp },
         )
 
-        val bundle = cachedBundle
+        val bundle = cachedBundles[config.cacheKey]
             ?.takeIf { it.signature == signature }
-            ?: buildBundle(config, files, signature).also { cachedBundle = it }
+            ?: buildBundle(config, files, signature).also { cachedBundles[config.cacheKey] = it }
 
         return bundle.translations[key]
     }
