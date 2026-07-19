@@ -40,7 +40,7 @@ intellijPlatform {
                 types = listOf(IntelliJPlatformType.IntellijIdea)
                 channels = listOf(ProductRelease.Channel.RELEASE)
                 sinceBuild = "261"
-                untilBuild = "261.*"
+                untilBuild = "262.*"
             }
         }
     }
