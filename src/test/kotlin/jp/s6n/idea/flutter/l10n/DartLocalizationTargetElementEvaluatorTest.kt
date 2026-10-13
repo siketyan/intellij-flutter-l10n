@@ -69,7 +69,7 @@ class DartLocalizationTargetElementEvaluatorTest : BasePlatformTestCase() {
     }
 
     private fun withFallbackEvaluator(element: PsiElement, evaluator: TargetElementEvaluatorEx2, test: () -> Unit) {
-        val extension = TargetElementUtilBase.TARGET_ELEMENT_EVALUATOR
+        val extension = DartLocalizationTargetElementEvaluator.evaluators
         extension.addExplicitExtension(element.language, evaluator)
         try {
             test()

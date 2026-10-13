@@ -1,8 +1,9 @@
 package jp.s6n.idea.flutter.l10n.navigation
 
+import com.intellij.codeInsight.TargetElementEvaluator
 import com.intellij.codeInsight.TargetElementEvaluatorEx2
-import com.intellij.codeInsight.TargetElementUtilBase
 import com.intellij.lang.Language
+import com.intellij.lang.LanguageExtension
 import com.intellij.psi.PsiElement
 import com.intellij.psi.PsiReference
 
@@ -23,6 +24,10 @@ class DartLocalizationTargetElementEvaluator : TargetElementEvaluatorEx2() {
     }
 
     private fun fallbackEvaluator(language: Language) =
-        TargetElementUtilBase.TARGET_ELEMENT_EVALUATOR.allForLanguage(language)
+        evaluators.allForLanguage(language)
             .firstOrNull { it !is DartLocalizationTargetElementEvaluator }
+
+    companion object {
+        internal val evaluators = LanguageExtension<TargetElementEvaluator>("com.intellij.targetElementEvaluator")
+    }
 }
