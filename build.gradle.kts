@@ -10,7 +10,7 @@ plugins {
 }
 
 dependencies {
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.12.0")
     implementation("com.charleskorn.kaml:kaml:0.104.0")
 
     testImplementation("junit:junit:4.13.2")
