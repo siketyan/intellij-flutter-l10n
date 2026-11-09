@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.3](https://github.com/siketyan/intellij-flutter-l10n/compare/v0.0.2...v0.0.3) (2026-11-09)
+
+
+### Bug Fixes
+
+* remove stray header from CHANGELOG.md that breaks the plugin build ([#41](https://github.com/siketyan/intellij-flutter-l10n/issues/41)) ([58869ab](https://github.com/siketyan/intellij-flutter-l10n/commit/58869ab85297212a6459b508ff87487a8ae8b739))
+
 ## [0.0.2](https://github.com/siketyan/intellij-flutter-l10n/compare/v0.0.1...v0.0.2) (2026-11-09)
 
 
