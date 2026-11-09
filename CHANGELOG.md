@@ -11,5 +11,3 @@
 ### Bug Fixes
 
 * preserve localization navigation with Dart target evaluator ([#29](https://github.com/siketyan/intellij-flutter-l10n/issues/29)) ([8d9096c](https://github.com/siketyan/intellij-flutter-l10n/commit/8d9096c11da4d7db468d7afad4806236cf398395))
-
-## Changelog
