@@ -70,6 +70,16 @@ Build the plugin ZIP:
 ./gradlew buildPlugin
 ```
 
+## Releasing
+
+Releases are automated with [release-please](https://github.com/googleapis/release-please):
+
+1. Merge pull requests with [Conventional Commits](https://www.conventionalcommits.org/) titles into `main`.
+2. release-please opens a release pull request that bumps `version.txt` and updates `CHANGELOG.md`.
+3. Merging the release pull request creates the tag and the GitHub Release, then the Release workflow publishes the plugin to JetBrains Marketplace.
+
+The plugin change notes are generated from `CHANGELOG.md` at build time.
+
 ## Manual Testing
 
 A small Flutter localization sample is included at:

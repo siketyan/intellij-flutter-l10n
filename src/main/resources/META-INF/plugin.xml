@@ -7,6 +7,8 @@
         <p>Shows Flutter localization messages from ARB files directly in Dart code as folding placeholders.</p>
     ]]></description>
 
+    <!-- Change notes are generated from CHANGELOG.md at build time. -->
+
     <depends>com.intellij.modules.platform</depends>
     <depends>com.intellij.modules.json</depends>
     <depends>Dart</depends>
