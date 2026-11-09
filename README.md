@@ -23,7 +23,7 @@ The plugin reads Flutter ARB files and `l10n.yaml`, then uses that information i
 
 ## Requirements
 
-- IntelliJ IDEA 2026.1 or later.
+- IntelliJ IDEA 2026.1 to 2026.3.
 - Dart plugin.
 - JSON platform module.
 

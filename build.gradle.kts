@@ -50,6 +50,7 @@ intellijPlatform {
 
         ideaVersion {
             sinceBuild = "261"
+            untilBuild = "263.*"
         }
     }
 
@@ -59,7 +60,7 @@ intellijPlatform {
                 types = listOf(IntelliJPlatformType.IntellijIdea)
                 channels = listOf(ProductRelease.Channel.RELEASE)
                 sinceBuild = "261"
-                untilBuild = "262.*"
+                untilBuild = "263.*"
             }
         }
     }
