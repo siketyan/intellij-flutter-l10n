@@ -2,9 +2,26 @@
 <idea-plugin>
     <id>jp.s6n.idea.flutter.l10n</id>
     <name>Flutter Localizations</name>
-    <vendor>Naoki Ikeguchi</vendor>
+    <vendor email="me@s6n.jp" url="https://github.com/siketyan">Naoki Ikeguchi</vendor>
     <description><![CDATA[
-        <p>Shows Flutter localization messages from ARB files directly in Dart code as folding placeholders.</p>
+        <p>Flutter localizations (<code>gen-l10n</code>) support for IntelliJ Platform.</p>
+        <p>
+            If you found a bug, please <a href="https://github.com/siketyan/intellij-flutter-l10n/issues/new">open an issue</a> on GitHub.
+        </p>
+        <p>Features:</p>
+        <ul>
+            <li>Shows localized ARB messages in Dart code as folding placeholders</li>
+            <li>Navigates from Dart localization keys to the matching ARB entries across locales</li>
+            <li>Navigates from ARB keys back to Dart usages</li>
+            <li>Recognizes <code>.arb</code> files as JSON</li>
+            <li>Reads <code>arb-dir</code>, <code>template-arb-file</code>, <code>output-class</code>, and <code>preferred-supported-locales</code> from <code>l10n.yaml</code></li>
+        </ul>
+        <p>Usage:</p>
+        <ol>
+            <li>Make sure the Dart plugin is installed.</li>
+            <li>Install this plugin to your IDE.</li>
+            <li>Open a Flutter project that uses <code>gen-l10n</code>.</li>
+        </ol>
     ]]></description>
 
     <depends>com.intellij.modules.platform</depends>
